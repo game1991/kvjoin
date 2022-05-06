@@ -40,6 +40,14 @@ type callback struct {
 	Data    map[string]interface{} `json:"data,omitempty"`
 }
 
+type Object struct {
+	Field1    string `json:"field_1,omitempty"`
+	Field2    bool   `json:"field_2,omitempty"`
+	Field3    int    `json:"field_3,omitempty"`
+	Timestamp int64  `json:"timestamp"`
+	Nonce     string `json:"nonce"`
+}
+
 type foo struct {
 	Animal []*animal
 	Count  int
@@ -77,6 +85,18 @@ func TestJoin(t *testing.T) {
 				opts: []Optional{},
 			},
 			wantErr: false,
+		},
+		{
+			name: "测试json对象2",
+			args: args{
+				src: Object{
+					Field1:    "value1",
+					Field2:    true,
+					Field3:    3,
+					Timestamp: time.Now().Unix(),
+					Nonce:     UUID32(),
+				},
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -155,4 +175,8 @@ func UUID32() string {
 	hex.Encode(buf[16:20], u[8:10])
 	hex.Encode(buf[20:], u[10:])
 	return string(buf[:])
+}
+
+func TestUUID32(t *testing.T) {
+	t.Log(UUID32())
 }
